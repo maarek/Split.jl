@@ -13,5 +13,5 @@ Pkg.add("Split")
 
 Split.jl provides a high-level method '**sample**' for returning a uniform random sample of a DataFrame, that contains percent of the total elements, without replacement, using a random seed.
 ```julia
-(train, test) = Split.sample(df, )
+(train, test) = Split.sample(df::AbstractDataFrame, fraction::Real, seed::Integer)
 ```
