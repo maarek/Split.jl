@@ -16,12 +16,21 @@ df = DataFrame(A = 1:5, B = ["A", "B", "C", "D", "E"])
 fraction = 0.5
 seed = 1234
 
-@test Split.seeded_shuffle(indices_da, seed) == [1,3,2,5,4]
+# Test that the shuffled input is different than the output
+@test Split.seeded_shuffle(indices_da, seed) != indices_da
 
-@test Split.sample_indices(size_da, fraction, seed) == ([1,3], [2,5,4])
+# Test that the shuffled input is equal to itself when the seed is the same
+@test Split.seeded_shuffle(indices_da, seed) == Split.seeded_shuffle(indices_da, seed)
 
-@test Split.sample(a, fraction, seed) == ([1,3], [2,5,4])
+# Test that the fractional split is correct
+(a, b) = Split.sample_indices(size_da, fraction, seed)
+@test size(a) == (2,) && size(b) == (3,)
 
-@test Split.sample(da, fraction, seed) == ([1,3], [2,5,4])
+# Test that the type for array is correct
+@test typeof(Split.sample(a, fraction, seed)) <: Tuple{Array, Array}
 
-@test Split.sample(df, fraction, seed) == (DataFrame(A = [1,3], B = ["A", "C"]), DataFrame(A = [2,5,4], B = ["B", "E", "D"]))
+# Test that the type for array is correct
+@test typeof(Split.sample(da, fraction, seed)) <: Tuple{DataArray, DataArray}
+
+# Test that the type for array is correct
+@test typeof(Split.sample(df, fraction, seed)) <: Tuple{DataFrame, DataFrame}
