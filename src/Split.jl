@@ -6,17 +6,36 @@ module Split
 using DataFrames
 
 # functions
-export sample
+export sample, split
 
 """
-Sample splits a set into two sets by a specificed percentage
+Split_random splits a set into two sets at random
+# Arguments
+* `df`: Array, DataFrame or DataArray to be split
+* optional `seed::Integer`: Seed to replicable split
+# Returns
+* '(first_set, second_set)': Split result
+"""
+split(df) = sample(df)
+split(df, seed::Integer) = sample(df, 0.5, seed)
+
+"""
+Sample splits a set into two sets at random by a specificed percentage
 # Arguments
 * `df`: Array, DataFrame or DataArray to be split
 * `fraction::Real`: Fraction of the split
-* `seed::Integer`: Seed to replicable split
+* optional `seed::Integer`: Seed to replicable split
 # Returns
 * '(training_set, test_set)': Split result
 """
+function sample(df)
+    return sample(df, 0.5)
+end
+
+function sample(df, fraction::Real)
+    return sample(df, fraction, rand(1:typemax(Int32)))
+end
+
 function sample(df, fraction::Real, seed::Integer)
     # copy
     norm_df = deepcopy(df)
