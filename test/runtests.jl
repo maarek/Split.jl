@@ -22,6 +22,6 @@ seed = 1234
 
 @test Split.sample(a, fraction, seed) == ([1,3], [2,5,4])
 
-@test Split.sample(da, fraction, seed) == (DataArray([1,3]), DataArray([2,5,4]))
+@test Split.sample(da, fraction, seed) == ([1,3], [2,5,4])
 
 @test Split.sample(df, fraction, seed) == (DataFrame(A = [1,3], B = ["A", "C"]), DataFrame(A = [2,5,4], B = ["B", "E", "D"]))

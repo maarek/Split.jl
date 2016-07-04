@@ -46,7 +46,12 @@ function sample(df, fraction::Real, seed::Integer)
     # split
     train_index, test_index = sample_indices(rows, fraction, seed)
 
-	return norm_df[train_index, :], norm_df[test_index, :]
+    # handle the response difference of an array/vector and a matrix
+    if typeof(norm_df) <: Array || typeof(norm_df) <: Vector || typeof(norm_df) <: DataArray
+        return norm_df[train_index], norm_df[test_index]
+    else
+        return norm_df[train_index, :], norm_df[test_index, :]
+    end
 end
 
 # Returns the indicies for each set
